@@ -1,0 +1,6 @@
+CREATE DATABASE Finance;
+GO
+USE Finance;
+GO
+CREATE SCHEMA Personal;
+GO
