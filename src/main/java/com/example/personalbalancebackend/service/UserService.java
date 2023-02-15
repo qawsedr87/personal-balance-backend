@@ -32,4 +32,12 @@ public class UserService {
         return this.userRepository.findById(userId)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "id", userId));
     }
+
+    public List<User> deleteUser(UUID id) {
+        this.userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", id));
+
+        this.userRepository.deleteById(id);
+        return this.userRepository.findAll();
+    }
 }

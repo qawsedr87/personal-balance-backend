@@ -43,4 +43,10 @@ public class UserController {
         User user = userService.getUserById(userId);
         return ResponseEntity.ok().body(UserMapper.INSTANCE.toDTO(user));
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<List<UserDTO>> deleteUser(@PathVariable UUID userId) throws ResourceNotFoundException {
+        List<User> users = userService.deleteUser(userId);
+        return ResponseEntity.ok().body(UserMapper.INSTANCE.toListDTO(users));
+    }
 }

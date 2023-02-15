@@ -1,20 +1,18 @@
 package com.example.personalbalancebackend.service;
 
-import com.example.personalbalancebackend.entity.Ledger;
-import com.example.personalbalancebackend.entity.Transaction;
-import com.example.personalbalancebackend.entity.TxCategory;
+import com.example.personalbalancebackend.entity.*;
 import com.example.personalbalancebackend.exception.ResourceNotFoundException;
 import com.example.personalbalancebackend.mapper.TransactionMapper;
 import com.example.personalbalancebackend.model.TransactionCreationDTO;
 import com.example.personalbalancebackend.repository.TransactionCategoryRepository;
 import com.example.personalbalancebackend.repository.TransactionRepository;
+import com.example.personalbalancebackend.service.utils.RandomGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.math.BigDecimal;
+import java.math.MathContext;
+import java.util.*;
 
 @Component
 @Slf4j
@@ -46,6 +44,43 @@ public class TransactionService {
         transaction.setCreatedAt(new Date());
         transaction.setUpdatedAt(new Date());
         return transactionRepository.save(transaction);
+    }
+
+
+    public List<Transaction> createTransactionFakeData(UUID ledgerId, int count, String currency, boolean isIncome) {
+        Ledger ledger = ledgerService.getLedgerById(ledgerId);
+        TxTypeEnum type = isIncome ? TxTypeEnum.INCOME : TxTypeEnum.EXPENSE;
+
+        String category = RandomGenerator.generateRandomCategoryTerm();
+        List<TxCategory> txCategories = transactionCategoryRepository.findByName(category);
+
+        TxCategory txCategory = txCategories.isEmpty()
+                ? transactionCategoryRepository.save(new TxCategory(category))
+                : txCategories.get(0);
+
+        List<Transaction> transactions = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            BigDecimal amount =  RandomGenerator.bigDecimalBetween(BigDecimal.valueOf(10), BigDecimal.valueOf(1000));
+
+            Transaction transaction = new Transaction(
+                    amount,
+                    currency,
+                    type,
+                    RandomGenerator.randomTxSource(isIncome),
+                    RandomGenerator.generateRandomTerm(isIncome),
+                    txCategory,
+                    ledger
+            );
+            transaction.setCreatedAt(new Date());
+            transaction.setUpdatedAt(new Date());
+
+            transactions.add(transaction);
+        }
+
+        // bulk saving
+        transactionRepository.saveAll(transactions);
+
+        return transactions;
     }
 
     public List<Transaction> getAllTransactions() {

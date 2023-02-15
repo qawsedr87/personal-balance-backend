@@ -36,6 +36,40 @@ public class TransactionController {
         return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toDTO(transaction));
     }
 
+    /**
+     * Manually create user and ledger
+     * @param ledgerId
+     * @param count
+     * @Param currency
+     * @return
+     * @throws ResourceNotFoundException
+     */
+    @PostMapping("/fake_income/{count}/{currency}")
+    public ResponseEntity<List<TransactionDTO>> createTransactionFakeIncome(@PathVariable UUID ledgerId, @PathVariable int count, @PathVariable String currency) {
+        // check ledger id if exists
+        ledgerService.getLedgerById(ledgerId);
+
+        List<Transaction> transactions = transactionService.createTransactionFakeData(ledgerId, count, currency, true);
+        return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toListDTO(transactions));
+    }
+
+    /**
+     * Manually create user and ledger
+     * @param ledgerId
+     * @param count
+     * @Param currency
+     * @return
+     * @throws ResourceNotFoundException
+     */
+    @PostMapping("/fake_expense/{count}/{currency}")
+    public ResponseEntity<List<TransactionDTO>> createTransactionFakeExpense(@PathVariable UUID ledgerId, @PathVariable int count, @PathVariable String currency) {
+        // check ledger id if exists
+        ledgerService.getLedgerById(ledgerId);
+
+        List<Transaction> transactions = transactionService.createTransactionFakeData(ledgerId, count, currency, false);
+        return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toListDTO(transactions));
+    }
+
     @GetMapping()
     public ResponseEntity<List<TransactionDTO>> getAllTransactions(@PathVariable UUID ledgerId)
             throws ResourceNotFoundException {
