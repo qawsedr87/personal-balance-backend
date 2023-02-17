@@ -9,6 +9,8 @@ import com.example.personalbalancebackend.service.LedgerService;
 import com.example.personalbalancebackend.service.TransactionService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -71,12 +73,16 @@ public class TransactionController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<TransactionDTO>> getAllTransactions(@PathVariable UUID ledgerId)
+    public ResponseEntity<List<TransactionDTO>> getAllTransactions(@PathVariable UUID ledgerId,
+                                                                   @RequestParam(required = false, defaultValue = "0") Integer page,
+                                                                   @RequestParam(required = false, defaultValue = "10") Integer size)
             throws ResourceNotFoundException {
         // check ledger id if exists
         ledgerService.getLedgerById(ledgerId);
 
-        List<Transaction> transactions = transactionService.getAllTransactionsByLedgerId(ledgerId);
+        Pageable pageable = PageRequest.of(page, size);
+
+        List<Transaction> transactions = transactionService.getAllTransactionsByLedgerId(ledgerId, pageable);
         return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toListDTO(transactions));
     }
 

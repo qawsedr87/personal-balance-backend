@@ -8,10 +8,11 @@ import com.example.personalbalancebackend.repository.TransactionCategoryReposito
 import com.example.personalbalancebackend.repository.TransactionRepository;
 import com.example.personalbalancebackend.service.utils.RandomGenerator;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.util.*;
 
 @Component
@@ -26,7 +27,6 @@ public class TransactionService {
         this.transactionCategoryRepository = transactionCategoryRepository;
         this.ledgerService = ledgerService;
     }
-
 
     public Transaction createTransaction(UUID ledgerId, TransactionCreationDTO transactionCreationDTO) {
         // create or get transaction category
@@ -87,8 +87,16 @@ public class TransactionService {
         return transactionRepository.findAll();
     }
 
-    public List<Transaction> getAllTransactionsByLedgerId(UUID ledgerId) {
-        return transactionRepository.findTransactionsByLedger_Id(ledgerId);
+    public List<Transaction> getAllTransactionsByLedgerId(UUID ledgerId, Pageable paging) {
+
+        Page<Transaction> pagedResult = transactionRepository.findTransactionsByLedger_Id(ledgerId, paging);
+
+        if (paging.getPageNumber() > pagedResult.getTotalPages()) {
+            throw new ResourceNotFoundException("Transaction", "page is out of range",
+                    "total page is " + pagedResult.getTotalPages() + ", size of each page is " + pagedResult.getSize());
+        }
+
+        return pagedResult.toList();
     }
 
     public Transaction getTransactionsById(UUID transactionId) {
@@ -108,7 +116,15 @@ public class TransactionService {
         return transaction;
     }
 
-    public List<TxCategory> getAllTransactionCategories() {
-        return transactionCategoryRepository.findAll();
+    public List<TxCategory> getAllTransactionCategories(Pageable paging) {
+
+        Page<TxCategory> pagedResult = transactionCategoryRepository.findAll(paging);
+
+        if (paging.getPageNumber() > pagedResult.getTotalPages()) {
+            throw new ResourceNotFoundException("Transaction category", "page is out of range",
+                    "total page is " + pagedResult.getTotalPages() + ", size of each page is " + pagedResult.getSize());
+        }
+
+        return pagedResult.toList();
     }
 }

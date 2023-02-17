@@ -2,7 +2,6 @@ package com.example.personalbalancebackend.entity;
 
 import com.example.personalbalancebackend.model.AuditModel;
 import jakarta.persistence.*;
-import jdk.jshell.Snippet;
 import lombok.*;
 
 import java.util.ArrayList;

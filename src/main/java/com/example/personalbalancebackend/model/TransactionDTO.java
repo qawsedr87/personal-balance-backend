@@ -2,6 +2,7 @@ package com.example.personalbalancebackend.model;
 
 import com.example.personalbalancebackend.entity.TxSourceEnum;
 import com.example.personalbalancebackend.entity.TxTypeEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,6 +14,7 @@ import java.util.UUID;
 @Getter
 @Builder
 public class TransactionDTO {
+    @JsonProperty("transactionId")
     private UUID id;
     private BigDecimal amount;
     private String currency;

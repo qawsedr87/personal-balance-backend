@@ -146,16 +146,48 @@ curl --request POST \
 	"userId": "29b0446e-9f47-4c60-9bf3-acc8775f83d1"
 }
 ```
-5. Get a transaction 
+5. Get a trabsaction by `ledgerId`  (with Pagination)
+- default parameters
+   - page: 0
+   - size: 10
+  
+```shell
+curl --request GET \
+  --url 'http://localhost:8080/api/v1/ledgers/cb601dfb-830e-47c9-b661-82bf0c560f83/transactions?page=0&size=1'
+  
+## response
+[
+	{
+		"amount": 758.300,
+		"currency": "TWD",
+		"type": "EXPENSE",
+		"source": "CASH",
+		"memo": "personal_emergency_water bill",
+		"category": {
+			"name": "budgeting",
+			"categoryId": "7cca6c14-5739-424c-a69d-d7465ce415df"
+		},
+		"ledgerId": "cb601dfb-830e-47c9-b661-82bf0c560f83",
+		"userId": "29b0446e-9f47-4c60-9bf3-acc8775f83d1",
+		"transactionId": "13721d17-42a8-4358-92a6-83e22da1bf09"
+	}
+]
+```
+
+6. Get a transaction 
 ```shell
 curl --request GET \
   --url http://localhost:8080/api/v1/ledgers/cb601dfb-830e-47c9-b661-82bf0c560f83/transactions/00e032f7-365d-4d74-8a84-248b6869dc6d
 ```
 
-6. Get a transaction category
+7. Get a transaction category (with Pagination)
+- default parameters 
+  - page: 0
+  - size: 10
+
 ```shell
 curl --request GET \
-  --url http://localhost:8080/api/v1/tx_categories
+  --url 'http://localhost:8080/api/v1/tx_categories?page=0&size=1'
 
 ## Response
 [
@@ -165,7 +197,7 @@ curl --request GET \
 	}, ....
 ]
 ```
-7. Search Transactions 
+8. Search Transactions 
 
 To be continued.. 
 
