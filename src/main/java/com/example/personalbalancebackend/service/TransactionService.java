@@ -9,7 +9,9 @@ import com.example.personalbalancebackend.repository.TransactionRepository;
 import com.example.personalbalancebackend.service.utils.RandomGenerator;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -40,9 +42,6 @@ public class TransactionService {
 
         Ledger ledger = ledgerService.getLedgerById(ledgerId);
         Transaction transaction = TransactionMapper.INSTANCE.toEntity(transactionCreationDTO, txCategory, ledger);
-
-        transaction.setCreatedAt(new Date());
-        transaction.setUpdatedAt(new Date());
         return transactionRepository.save(transaction);
     }
 
@@ -69,10 +68,10 @@ public class TransactionService {
                     RandomGenerator.randomTxSource(isIncome),
                     RandomGenerator.generateRandomTerm(isIncome),
                     txCategory,
-                    ledger
+                    ledger,
+                    new Date(),
+                    new Date()
             );
-            transaction.setCreatedAt(new Date());
-            transaction.setUpdatedAt(new Date());
 
             transactions.add(transaction);
         }
@@ -114,6 +113,20 @@ public class TransactionService {
         }
 
         return transaction;
+    }
+
+    public List<Transaction> deleteTransactionById(UUID ledgerId, UUID transactionId) {
+        Transaction transaction = transactionRepository.findById(transactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction", "id", transactionId));
+
+        if (!transaction.getLedger().getId().equals(ledgerId)) {
+            throw new ResourceNotFoundException("Transaction", "ledger id", ledgerId);
+        }
+
+        transactionRepository.deleteById(transactionId);
+
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("createdAt").descending());
+        return getAllTransactionsByLedgerId(ledgerId, pageable);
     }
 
     public List<TxCategory> getAllTransactionCategories(Pageable paging) {

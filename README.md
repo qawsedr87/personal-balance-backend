@@ -66,9 +66,11 @@ curl --request POST \
 
 ## Response 
 {
-	"id": "3aea1c5a-e261-4158-bcc1-cb9e2ac3b752",
-	"name": "David",
-	"ledgers": []
+	"createdAt": "2023-02-18T01:10:26.529+00:00",
+	"updatedAt": "2023-02-18T01:10:26.529+00:00",
+	"name": "Dane",
+	"ledgers": [],
+	"userId": "69348c3b-bec3-4db4-b12d-0d84d91867ee"
 }
 ```
 2. Get all users
@@ -79,19 +81,23 @@ curl --request GET \
 ## Response
 [
 	{
-		"id": "29b0446e-9f47-4c60-9bf3-acc8775f83d1",
+		"createdAt": "2023-02-15T19:56:22.136+00:00",
+		"updatedAt": "2023-02-15T19:56:22.136+00:00",
 		"name": "Anna",
 		"ledgers": [
 			{
-				"id": "cb601dfb-830e-47c9-b661-82bf0c560f83",
-				"name": "Anna_Ledger"
+				"name": "Anna_Ledger",
+				"ledgerId": "cb601dfb-830e-47c9-b661-82bf0c560f83"
 			}
-		]
+		],
+		"userId": "29b0446e-9f47-4c60-9bf3-acc8775f83d1"
 	},
 	{
-		"id": "3aea1c5a-e261-4158-bcc1-cb9e2ac3b752",
+		"createdAt": "2023-02-15T19:56:29.219+00:00",
+		"updatedAt": "2023-02-15T19:56:29.219+00:00",
 		"name": "David",
-		"ledgers": []
+		"ledgers": [],
+		"userId": "3aea1c5a-e261-4158-bcc1-cb9e2ac3b752"
 	}
 ]
 ```
@@ -107,9 +113,11 @@ curl --request POST \
 
 ## Response 
 {
-	"id": "fd00bac9-418c-4eda-a2be-052c44dcd266",
-	"name": "David_Ledger",
-	"userId": "3aea1c5a-e261-4158-bcc1-cb9e2ac3b752"
+    "createdAt": "2023-02-15T21:18:21.048+00:00",
+    "updatedAt": "2023-02-15T21:18:21.048+00:00",
+    "name": "David_Ledger",
+    "userId": "3aea1c5a-e261-4158-bcc1-cb9e2ac3b752",
+    "ledgerId": "fd00bac9-418c-4eda-a2be-052c44dcd266"
 }
 ```
 4. Add a transaction
@@ -132,7 +140,7 @@ curl --request POST \
 
 ## Response 
 {
-	"id": "e2b371ee-0e91-4eb1-b937-9303acdf15f8",
+	"transactionId": "e2b371ee-0e91-4eb1-b937-9303acdf15f8",
 	"amount": 200,
 	"currency": "USD",
 	"type": "INCOME",
@@ -143,7 +151,9 @@ curl --request POST \
 		"name": "parttime"
 	},
 	"ledgerId": "cb601dfb-830e-47c9-b661-82bf0c560f83",
-	"userId": "29b0446e-9f47-4c60-9bf3-acc8775f83d1"
+	"userId": "29b0446e-9f47-4c60-9bf3-acc8775f83d1",
+	"createdAt": "2023-02-18T01:06:55.677+00:00",
+	"updatedAt": "2023-02-18T01:06:55.677+00:00",
 }
 ```
 5. Get a trabsaction by `ledgerId`  (with Pagination)
@@ -158,6 +168,8 @@ curl --request GET \
 ## response
 [
 	{
+		"createdAt": "2023-02-18T01:06:55.677+00:00",
+	    "updatedAt": "2023-02-18T01:06:55.677+00:00",
 		"amount": 758.300,
 		"currency": "TWD",
 		"type": "EXPENSE",
@@ -192,7 +204,7 @@ curl --request GET \
 ## Response
 [
 	{
-		"id": "350e89e5-dd8a-450f-9a5f-6fbb13c7a5a5",
+		"categoryId": "350e89e5-dd8a-450f-9a5f-6fbb13c7a5a5",
 		"name": "retirement"
 	}, ....
 ]

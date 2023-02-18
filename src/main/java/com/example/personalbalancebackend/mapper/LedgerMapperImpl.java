@@ -25,6 +25,8 @@ public class LedgerMapperImpl implements LedgerMapper {
                 .id(entity.getId())
                 .name(entity.getName())
                 .userId(entity.getUser().getId())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

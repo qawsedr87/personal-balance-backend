@@ -51,8 +51,11 @@ public class Transaction extends AuditModel {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Ledger ledger;
 
-    public Transaction() {}
-    public Transaction (BigDecimal amount, String currency, TxTypeEnum txType, TxSourceEnum txSource, String memo, TxCategory txCategory, Ledger ledger) {
+    public Transaction() {
+        super(new Date(), new Date());
+    }
+    public Transaction (BigDecimal amount, String currency, TxTypeEnum txType, TxSourceEnum txSource, String memo, TxCategory txCategory, Ledger ledger, Date createdAt, Date updatedAt) {
+        super(createdAt, updatedAt);
         this.id = UUID.randomUUID();
         this.amount = amount;
         this.currency = currency;

@@ -7,6 +7,7 @@ import com.example.personalbalancebackend.service.TransactionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,7 +31,7 @@ public class TransactionCategoryController {
     public List<TransactionCategoryDTO> getAllTransactionCategories(@RequestParam(required = false, defaultValue = "0") Integer page,
                                                                     @RequestParam(required = false, defaultValue = "10") Integer size) {
 
-        Pageable paging = PageRequest.of(page, size);
+        Pageable paging = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         List<TxCategory> categories = transactionService.getAllTransactionCategories(paging);
         return TransactionCategoryMapper.INSTANCE.toListDTO(categories);

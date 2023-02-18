@@ -2,6 +2,7 @@ package com.example.personalbalancebackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -15,10 +16,11 @@ import java.util.Date;
 @Getter
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(
-        value = {"createdAt", "updatedAt"},
-        allowGetters = true
-)
+@AllArgsConstructor
+//@JsonIgnoreProperties(
+//        value = {"createdAt", "updatedAt"},
+//        allowGetters = true
+//)
 public abstract class AuditModel implements Serializable {
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.UUID)

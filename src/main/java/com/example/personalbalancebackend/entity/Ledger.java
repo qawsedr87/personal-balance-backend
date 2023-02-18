@@ -10,6 +10,7 @@ import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -33,8 +34,11 @@ public class Ledger extends AuditModel {
     @OneToMany( mappedBy = "ledger")
     private List<Transaction> transactions;
 
-    public Ledger () {}
+    public Ledger () {
+        super(new Date(), new Date());
+    }
     public Ledger (String name, User user) {
+        super(new Date(), new Date());
         this.id = UUID.randomUUID();
         this.name = name;
         this.user = user;

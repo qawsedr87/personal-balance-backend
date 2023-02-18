@@ -9,6 +9,7 @@ import com.example.personalbalancebackend.model.TransactionCreationDTO;
 import com.example.personalbalancebackend.model.TransactionDTO;
 
 import javax.annotation.processing.Generated;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,7 +27,9 @@ public class TransactionMapperImpl implements TransactionMapper {
                 dto.getSource(),
                 dto.getMemo(),
                 txCategory,
-                ledger
+                ledger,
+                new Date(),
+                new Date()
         );
     }
 
@@ -48,6 +51,8 @@ public class TransactionMapperImpl implements TransactionMapper {
                 .category(txCategoryDTO)
                 .ledgerId(entity.getLedger().getId())
                 .userId(entity.getLedger().getUser().getId())
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
                 .build();
     }
 

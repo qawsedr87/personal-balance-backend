@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
@@ -80,7 +81,7 @@ public class TransactionController {
         // check ledger id if exists
         ledgerService.getLedgerById(ledgerId);
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").descending());
 
         List<Transaction> transactions = transactionService.getAllTransactionsByLedgerId(ledgerId, pageable);
         return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toListDTO(transactions));
@@ -94,5 +95,14 @@ public class TransactionController {
 
         Transaction transaction = transactionService.getTransactionsByLedgerIdAndTxId(ledgerId, transactionId);
         return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toDTO(transaction));
+    }
+
+    @DeleteMapping("/{transactionId}")
+    public ResponseEntity<List<TransactionDTO>> deleteTransactionById(@PathVariable UUID ledgerId, @PathVariable UUID transactionId) throws ResourceNotFoundException {
+        // check ledger id if exists
+        ledgerService.getLedgerById(ledgerId);
+
+        List<Transaction> transactions = transactionService.deleteTransactionById(ledgerId, transactionId);
+        return ResponseEntity.ok().body(TransactionMapper.INSTANCE.toListDTO(transactions));
     }
 }

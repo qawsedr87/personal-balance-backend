@@ -25,13 +25,14 @@ public class TxCategory extends AuditModel {
     @OneToMany( mappedBy = "txCategory")
     private List<Transaction> transactions;
 
-    public TxCategory() {}
+    public TxCategory() {
+        super(new Date(), new Date());
+    }
 
     public TxCategory(String name) {
+        super(new Date(), new Date());
         this.id = UUID.randomUUID();
         this.name = name.toLowerCase();
         this.transactions = new ArrayList<>();
-        this.setCreatedAt(new Date());
-        this.setUpdatedAt(new Date());
     }
 }

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -23,8 +24,11 @@ public class User extends AuditModel {
     @OneToMany( mappedBy = "user")
     private List<Ledger> ledgers;
 
-    public User () {}
+    public User () {
+        super(new Date(), new Date());
+    }
     public User (String name) {
+        super(new Date(), new Date());
         this.id = UUID.randomUUID();
         this.name = name;
         this.ledgers = new ArrayList<>();

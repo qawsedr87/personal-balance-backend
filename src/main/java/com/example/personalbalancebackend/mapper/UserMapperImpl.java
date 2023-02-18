@@ -33,7 +33,10 @@ public class UserMapperImpl implements UserMapper {
                         .build()
                 ).toList();
 
-        return UserDTO.builder().id(entity.getId()).name(entity.getName()).ledgers(ledgers).build();
+        return UserDTO.builder().id(entity.getId()).name(entity.getName()).ledgers(ledgers)
+                .createdAt(entity.getCreatedAt())
+                .updatedAt(entity.getUpdatedAt())
+                .build();
     }
 
     @Override
