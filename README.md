@@ -55,6 +55,11 @@ GO
 5. To stop the containers, press CTRL + C.
 
 ## RESTful API
+
+Please run the applications first, and browser swagger ui, http://localhost:8080/swagger-ui/index.html
+
+For more details about Apis, [Open API 3 - personal-balance-backend ](./doc/openapi3_backend.json) or browser the following link, http://localhost:8080/v3/api-docs 
+
 1. Add a user
 ```shell
 curl --request POST \
@@ -220,5 +225,6 @@ To be continued..
    - Add `Pagenation` feature 
    - Add mistake-proofing checking on each field 
 3. Refactor `service`
-4. Integrate Swagger 
-   - Update README
+4. <del>Integrate Swagger 
+   - Update README</del>
+
